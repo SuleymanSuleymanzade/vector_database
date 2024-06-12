@@ -1,4 +1,4 @@
-type Vector = [f32; 3]; 
+pub type Vector = [f32; 3]; 
 
 pub struct VectorDB {
     vectors: Vec<Vector>,
