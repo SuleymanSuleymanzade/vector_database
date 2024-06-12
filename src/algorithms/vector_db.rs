@@ -18,7 +18,6 @@ impl VectorDB {
    }
 }
 
-
 impl VectorDB {
     pub fn find_closest(&self, query: Vector) -> Option<&Vector> {
             self.vectors.iter().min_by(|&a, &b| {

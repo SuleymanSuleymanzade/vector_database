@@ -1,9 +1,6 @@
 use crate::vector_db;
 use std::collections::HashMap;
 
-
-
-
 #[derive(Debug)]
 #[allow(dead_code)]
 pub enum KDTreeNode {

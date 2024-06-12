@@ -1,7 +1,9 @@
 use std::collections::HashMap;
 
-mod vector_db;
-mod kdtree;
+mod algorithms;
+use algorithms::vector_db as vector_db;
+use algorithms::kdtree as kdtree;
+
 fn main() {
     // let mut db = crate::vector_db::VectorDB::new();
     // db.add_vector([1.0, 2.0, 3.0]);
