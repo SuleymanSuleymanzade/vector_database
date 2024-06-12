@@ -1,4 +1,9 @@
 use crate::vector_db;
+use std::collections::HashMap;
+
+
+
+
 #[derive(Debug)]
 #[allow(dead_code)]
 pub enum KDTreeNode {
@@ -19,8 +24,15 @@ pub struct KDTree {
 
 impl KDTree {
 
-    pub fn new(root:KDTreeNode) -> Self{
-        Self { root: root }
+    pub fn new(points: Vec<vector_db::Vector>, state: HashMap<&str, usize>) -> Self{
+        
+        if !state.contains_key("depth"){
+            panic!("There is not 'depth' uint parameter in passed state.");
+        }
+        let temp_root: KDTreeNode = KDTree::build(points, *state.get("depth").unwrap());
+        Self{
+            root:temp_root
+        }
     }
 
     pub fn build(points: Vec<vector_db::Vector>, depth: usize) -> KDTreeNode {
