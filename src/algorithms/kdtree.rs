@@ -4,7 +4,7 @@ use std::collections::HashMap;
 
 use super::fast_search::FastSearch;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 #[allow(dead_code)]
 pub enum KDTreeNode {
     Leaf(vector_db::Vector),
@@ -91,6 +91,36 @@ impl <'a> KDTree <'a>{
                 }
             }
         }
+
+    fn insert_recursive(&self, node: KDTreeNode, point: vector_db::Vector, depth: usize) -> KDTreeNode {
+        match node {
+            KDTreeNode::Leaf(_) => {
+                let mut points = Vec::new();
+                if let KDTreeNode::Leaf(existing_point) = node {
+                    points.push(existing_point);
+                }
+                points.push(point);
+                KDTree::build(points, depth)
+            }
+            KDTreeNode::Internal { mut left, mut right, split_value, split_dimension } => {
+                let dim = depth % 3;
+                if point[dim] < split_value {
+                    left = Box::new(self.insert_recursive(*left, point, depth + 1));
+                } else {
+                    right = Box::new(self.insert_recursive(*right, point, depth + 1));
+                }
+                KDTreeNode::Internal {
+                    left,
+                    right,
+                    split_value,
+                    split_dimension,
+                }
+            }
+        }
+    }
+    pub fn insert(&mut self, point: vector_db::Vector) {
+            self.root = self.insert_recursive(self.root.clone(), point, *self.state.get("depth").unwrap());
+    }
 }
 
 impl <'a> FastSearch for KDTree <'a>{
