@@ -1,5 +1,6 @@
 use crate::vector_db;
 #[derive(Debug)]
+#[allow(dead_code)]
 pub enum KDTreeNode {
     Leaf(vector_db::Vector),
     Internal {
@@ -9,12 +10,19 @@ pub enum KDTreeNode {
         split_dimension: usize,
     },
 }
+
 #[derive(Debug)]
+#[allow(dead_code)]
 pub struct KDTree {
     root: KDTreeNode,
 }
 
 impl KDTree {
+
+    pub fn new(root:KDTreeNode) -> Self{
+        Self { root: root }
+    }
+
     pub fn build(points: Vec<vector_db::Vector>, depth: usize) -> KDTreeNode {
         if points.len() == 1 {
             return KDTreeNode::Leaf(points[0]);
@@ -27,7 +35,6 @@ impl KDTree {
         let median_value = sorted_points[median_idx][dim];
         
         KDTreeNode::Internal {
-            
             left: Box::new(
                 KDTree::build(sorted_points[..median_idx].to_vec(), 
                 depth + 1)),

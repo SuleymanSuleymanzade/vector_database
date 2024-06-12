@@ -14,11 +14,15 @@ fn main() {
     //     println!("Closest vector: {:?}", closest);
     // }
 
-    let points = vec![[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [2.0, 3.0, 4.0]];
-    let kd_tree = kdtree::KDTree::build(points, 0);
+    let points = vec![
+        [1.0, 2.0, 3.0],
+        [4.0, 5.0, 6.0],
+        [2.0, 3.0, 4.0]];
+        
+    let kd_tree_node = kdtree::KDTree::build(points, 0);
+    let kd_tree_object: kdtree::KDTree = kdtree::KDTree::new(kd_tree_node);
     
-    println!("{:?}", kd_tree);
-    if let Some(nearest) = kd_tree.nearest_neighbor(&[3.0, 3.0, 3.0]) {
+    if let Some(nearest) = kd_tree_object.nearest_neighbor(&[3.0, 3.0, 3.0]) {
             println!("Nearest neighbor: {:?}", nearest);
     }
 
