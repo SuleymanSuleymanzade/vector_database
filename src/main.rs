@@ -3,6 +3,7 @@ use std::collections::HashMap;
 mod algorithms;
 use algorithms::vector_db as vector_db;
 use algorithms::kdtree as kdtree;
+use crate::algorithms::fast_search::FastSearch; 
 
 fn main() {
     // let mut db = crate::vector_db::VectorDB::new();
@@ -31,5 +32,7 @@ fn main() {
     if let Some(nearest) = kd_tree_obj.nearest_neighbor(&[3.0, 3.0, 3.0]) {
             println!("Nearest neighbor: {:?}", nearest);
     }
+
+    println!("{:?}", kd_tree_obj); // check for state
 
 }

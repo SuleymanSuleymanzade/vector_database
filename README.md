@@ -2,7 +2,6 @@
 
 ![logo](./assets/vector_db.png)
 
-
 Open source project written in Rust for vector database retrieval storage system.
 
 ### Features.

@@ -1,5 +1,8 @@
+use crate::algorithms::fast_search as fast_search;
 use crate::vector_db;
 use std::collections::HashMap;
+
+use super::fast_search::FastSearch;
 
 #[derive(Debug)]
 #[allow(dead_code)]
@@ -15,20 +18,23 @@ pub enum KDTreeNode {
 
 #[derive(Debug)]
 #[allow(dead_code)]
-pub struct KDTree {
+pub struct KDTree <'a>{
     root: KDTreeNode,
+    state: HashMap<&'a str, usize>
 }
 
-impl KDTree {
+impl <'a> KDTree <'a>{
 
-    pub fn new(points: Vec<vector_db::Vector>, state: HashMap<&str, usize>) -> Self{
+    pub fn new(points: Vec<vector_db::Vector>, state: HashMap<&'a str, usize>) -> Self{
         
         if !state.contains_key("depth"){
             panic!("There is not 'depth' uint parameter in passed state.");
         }
         let temp_root: KDTreeNode = KDTree::build(points, *state.get("depth").unwrap());
+
         Self{
-            root:temp_root
+            root:temp_root,
+            state: state
         }
     }
 
@@ -57,16 +63,12 @@ impl KDTree {
         }
     }
 
-    pub fn nearest_neighbor(&self, query: &vector_db::Vector) -> Option<&vector_db::Vector> {
-        self.nearest(query, &self.root, None, f32::MAX)
-    }
-
-    pub fn nearest<'a>(
-        &'a self, 
+    pub fn nearest<'b>(
+        &'b self, 
         query: &vector_db::Vector,
-        node: &'a KDTreeNode, 
-        best: Option<&'a vector_db::Vector>, 
-        best_dist: f32) -> Option<&'a vector_db::Vector> {
+        node: &'b KDTreeNode, 
+        best: Option<&'b vector_db::Vector>, 
+        best_dist: f32) -> Option<&'b vector_db::Vector> {
             match node {
                 KDTreeNode::Leaf(point) => {
                     let dist = vector_db::VectorDB::euclidean_distance(query, point);
@@ -89,4 +91,10 @@ impl KDTree {
                 }
             }
         }
+}
+
+impl <'a> FastSearch for KDTree <'a>{
+    fn nearest_neighbor(&self, query: &vector_db::Vector) -> Option<&vector_db::Vector> {
+        self.nearest(query, &self.root, None, f32::MAX)
+    }
 }
