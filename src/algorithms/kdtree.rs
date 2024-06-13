@@ -1,9 +1,11 @@
 use crate::algorithms::fast_search as fast_search;
 use crate::vector_db;
 use std::collections::HashMap;
-
 use super::fast_search::FastSearch;
+use serde::{Serialize, Deserialize};
+use serde_json::Result;
 
+#[derive(Serialize, Deserialize)]
 #[derive(Debug, Clone)]
 #[allow(dead_code)]
 pub enum KDTreeNode {
@@ -16,6 +18,7 @@ pub enum KDTreeNode {
     },
 }
 
+#[derive(Serialize)]
 #[derive(Debug)]
 #[allow(dead_code)]
 pub struct KDTree <'a>{
@@ -126,5 +129,9 @@ impl <'a> KDTree <'a>{
 impl <'a> FastSearch for KDTree <'a>{
     fn nearest_neighbor(&self, query: &vector_db::Vector) -> Option<&vector_db::Vector> {
         self.nearest(query, &self.root, None, f32::MAX)
+    }
+
+    fn get_state(&self) -> serde_json::Result<String>{
+        serde_json::to_string(&self)
     }
 }

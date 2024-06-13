@@ -24,7 +24,11 @@ Open source project written in Rust for vector database retrieval storage system
 name = "vector_database"
 version = "0.1.0"
 edition = "2021"
+
 [dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_derive = "1.0"
+serde_json = "1.0"
 ```
 
 The project is on developing stage.
