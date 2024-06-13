@@ -1,5 +1,7 @@
 pub type Vector = [f32; 3]; 
 
+#[derive(Debug)]
+#[allow(dead_code)]
 pub struct VectorDB {
     vectors: Vec<Vector>,
 }
@@ -15,10 +17,8 @@ impl VectorDB {
  
    pub fn get_vector(&self, index: usize) -> Option<&Vector> {
         self.vectors.get(index)
-   }
-}
-
-impl VectorDB {
+    }
+    
     pub fn find_closest(&self, query: Vector) -> Option<&Vector> {
             self.vectors.iter().min_by(|&a, &b| {
                 let distance_a = VectorDB::euclidean_distance(&query, a);
