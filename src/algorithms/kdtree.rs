@@ -2,11 +2,11 @@ use crate::algorithms::fast_search as fast_search;
 use crate::vector_db;
 use std::collections::HashMap;
 use super::fast_search::FastSearch;
-use serde::{Serialize, Deserialize};
-use serde_json::Result;
+use serde::{Serialize, Deserialize, Deserializer};
+use serde_json;
+//use serde::de::{self, Visitor, MapAccess};
 
-#[derive(Serialize, Deserialize)]
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[allow(dead_code)]
 pub enum KDTreeNode {
     Leaf(vector_db::Vector),
@@ -18,23 +18,22 @@ pub enum KDTreeNode {
     },
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, Deserialize)]
 #[derive(Debug)]
 #[allow(dead_code)]
-pub struct KDTree <'a>{
+pub struct KDTree{
     root: KDTreeNode,
-    state: HashMap<&'a str, usize>
+    state: HashMap<String, usize>
 }
 
-impl <'a> KDTree <'a>{
+impl KDTree{
 
-    pub fn new(points: Vec<vector_db::Vector>, state: HashMap<&'a str, usize>) -> Self{
-        
+    pub fn new(points: Vec<vector_db::Vector>, state: HashMap<String, usize>) -> Self{
+        //Constructor    
         if !state.contains_key("depth"){
             panic!("There is not 'depth' uint parameter in passed state.");
         }
         let temp_root: KDTreeNode = KDTree::build(points, *state.get("depth").unwrap());
-
         Self{
             root:temp_root,
             state: state
@@ -126,12 +125,18 @@ impl <'a> KDTree <'a>{
     }
 }
 
-impl <'a> FastSearch for KDTree <'a>{
+impl FastSearch for KDTree{
     fn nearest_neighbor(&self, query: &vector_db::Vector) -> Option<&vector_db::Vector> {
         self.nearest(query, &self.root, None, f32::MAX)
     }
 
     fn get_state(&self) -> serde_json::Result<String>{
         serde_json::to_string(&self)
+    }
+
+    fn set_state(&mut self, serialized_state: &str)->serde_json::Result<()>{
+        let unserialized_state: KDTree = serde_json::from_str(serialized_state)?;
+        *self = unserialized_state;
+        Ok(())
     }
 }

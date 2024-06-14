@@ -26,7 +26,7 @@ fn main() {
         
     //let kd_tree_node = kdtree::KDTree::build(points, 0);
     //let kd_tree_object: kdtree::KDTree = kdtree::KDTree::new(kd_tree_node);
-    let state = HashMap::from([("depth", 2)]); // Using state provides universal trait interface for implementations
+    let state = HashMap::from([("depth".to_string(), 2)]); // Using state provides universal trait interface for implementations
     let mut kd_tree_obj = kdtree::KDTree::new(points, state);
     
     if let Some(nearest) = kd_tree_obj.nearest_neighbor(&[3.0, 3.0, 3.0]) {
