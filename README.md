@@ -29,6 +29,10 @@ edition = "2021"
 serde = { version = "1.0", features = ["derive"] }
 serde_derive = "1.0"
 serde_json = "1.0"
+pyo3 = { version = "0.18", features = ["extension-module"] }
+
+[lib]
+crate-type = ["cdylib"]
 ```
 
 The project is on developing stage.

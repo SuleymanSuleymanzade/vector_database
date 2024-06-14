@@ -26,6 +26,8 @@ fn main() {
         
     //let kd_tree_node = kdtree::KDTree::build(points, 0);
     //let kd_tree_object: kdtree::KDTree = kdtree::KDTree::new(kd_tree_node);
+    
+    
     let state = HashMap::from([("depth".to_string(), 2)]); // Using state provides universal trait interface for implementations
     let mut kd_tree_obj = kdtree::KDTree::new(points, state);
     
@@ -42,4 +44,10 @@ fn main() {
 
     println!("{:?}", kd_tree_obj); // check for state
 
+    println!("-------------------------------------------");
+
+    let state = kd_tree_obj.get_state();
+    let mut rr:String = state.unwrap();
+    rr.push_str("hello");
+    println!("{}", rr);
 }
