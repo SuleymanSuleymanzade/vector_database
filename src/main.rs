@@ -1,6 +1,9 @@
 use std::collections::HashMap;
 
 mod algorithms;
+mod state_manager;
+
+use state_manager::local_saver::LocalSaver;
 use algorithms::vector_db as vector_db;
 use algorithms::kdtree as kdtree;
 use crate::algorithms::fast_search::FastSearch; 
@@ -46,8 +49,14 @@ fn main() {
 
     println!("-------------------------------------------");
 
-    let state = kd_tree_obj.get_state();
-    let mut rr:String = state.unwrap();
-    rr.push_str("hello");
-    println!("{}", rr);
+    let state = kd_tree_obj.get_state().unwrap();
+    //let mut rr:String = state.unwrap();
+    //rr.push_str("hello");
+    //println!("{}", rr);
+
+    LocalSaver::save_state(
+        &kd_tree_obj, 
+        "local_file.json").expect("failed to save state");
+    //ls local_saver = LocalSaver();
+    
 }
