@@ -9,6 +9,8 @@ use serde_json;
 #[derive(Debug)]
 #[allow(dead_code)]
 pub struct HashGenerator {
+    hash_size: usize,
+    dimension_size: usize,
     projections: Array2<f64>,
     hash_map: HashMap<String, Vec<String>>,
 }
@@ -18,7 +20,9 @@ impl Serialize for HashGenerator {
     where
         S: Serializer,
     {
-        let mut state = serializer.serialize_struct("HashGenerator", 2)?;
+        let mut state = serializer.serialize_struct("HashGenerator", 4)?;
+        state.serialize_field("hash_size", &self.hash_size)?;
+        state.serialize_field("dimension_size", &self.dimension_size)?;
         state.serialize_field("projections", &self.projections.as_slice().unwrap())?;
         state.serialize_field("hash_map", &self.hash_map)?;
         state.end()
@@ -32,30 +36,35 @@ impl<'de> Deserialize<'de> for HashGenerator {
     {
         #[derive(Deserialize)]
         struct HashGeneratorHelper {
+            hash_size: usize,
+            dimension_size: usize,
             projections: Vec<f64>,
             hash_map: HashMap<String, Vec<String>>,
         }
 
         let helper = HashGeneratorHelper::deserialize(deserializer)?;
-        let projections = Array2::from_shape_vec((helper.projections.len() / 2, 2), helper.projections)
+        let projections = Array2::from_shape_vec((helper.hash_size, helper.dimension_size), helper.projections)
             .map_err(serde::de::Error::custom)?;
-        
+
         Ok(HashGenerator {
+            hash_size: helper.hash_size,
+            dimension_size: helper.dimension_size,
             projections,
             hash_map: helper.hash_map,
         })
     }
 }
 
-
 impl HashGenerator {
-    pub fn new(hash_size: usize, inp_dimensions: usize) -> Self {
+    pub fn new(hash_size: usize, dimension_size: usize) -> Self {
         let mut rng = thread_rng();
         let projections = Array2::from_shape_fn(
-            (hash_size, inp_dimensions), |_| rng.gen_range(-1.0..1.0));
+            (hash_size, dimension_size), |_| rng.gen_range(-1.0..1.0));
             
         HashGenerator { 
-            projections: projections,
+            hash_size,
+            dimension_size,
+            projections,
             hash_map: HashMap::new(),
         }
     }
