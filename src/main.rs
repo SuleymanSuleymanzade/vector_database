@@ -69,15 +69,13 @@ fn main() {
 
     println!("{:?}", kd_tree_obj);
 
-    let num_projections = 5; // Example number of projections
-    let generator = HashGenerator::new(num_projections);
-
-    // Example input vector
-    let input_vector = arr1(&[0.1, -0.3, 0.5, -0.7, 0.9]);
-
-    // Generate hash for input vector
-    let hash = generator.generate_hash(&input_vector);
-    println!("----------------------------------");
-    println!("{:?}", hash);
+    let mut hash_generator = HashGenerator::new(18, 5);
+    let inp_vector = arr1(&[3.0, 6.0, 3.0, 4.0, 6.0]);
+    let hash_value = hash_generator.generate_hash(&inp_vector);
+    println!("Generated hash: {}", hash_value);
+    
+    hash_generator.insert(&inp_vector, "label1".to_string());
+    let result = hash_generator.get(&inp_vector);
+    println!("Retrieved labels: {:?}", result);
     
 }
