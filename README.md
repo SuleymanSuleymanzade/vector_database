@@ -42,7 +42,7 @@ serde_json = "1.0"
 crate-type = ["cdylib"]
 ```
 
-Architecture:
+#### Architecture:
 
 Currently the project archiecture includes the structs responsible for the algorithms and storage.
 
@@ -50,7 +50,13 @@ Currently the project archiecture includes the structs responsible for the algor
 
 ---
 
-for contribution, open the [link](contribution.md).
+For contribution, open the [link](contribution.md). 
+
+Preferable skills for __Rust__ contributors:
+* Actix web framework
+* working with _Rust_ ndarrays
+* knowing _Polaris_ 
+* Parallel programming (multithreading) and NVidia CUDA APIs.
 
 
 The project currently under the development.
