@@ -45,7 +45,7 @@ fn main() {
         println!("Nearest neighbor: {:?}", nearest);
     }
 
-    println!("{:?}", kd_tree_obj); // check for state
+    //println!("{:?}", kd_tree_obj); // check for state
 
     println!("-------------------------------------------");
 
@@ -54,9 +54,15 @@ fn main() {
     //rr.push_str("hello");
     //println!("{}", rr);
 
-    LocalSaver::save_state(
-        &kd_tree_obj, 
-        "local_file.json").expect("failed to save state");
-    //ls local_saver = LocalSaver();
+    // LocalSaver::save_state(
+    //     &kd_tree_obj, 
+    //     "local_file.json").expect("failed to save state");
+    // //ls local_saver = LocalSaver();
+
+    LocalSaver::load_state(
+        &mut kd_tree_obj,
+         "local_file.json").expect("Failed to load state");
+
+    println!("{:?}", kd_tree_obj);
     
 }

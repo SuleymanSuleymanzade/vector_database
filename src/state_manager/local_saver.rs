@@ -6,7 +6,6 @@ use serde_json::Error as SerdeError;
 
 pub struct LocalSaver;
 
-
 impl LocalSaver {
     pub fn save_state<T>(fast_search: &T, file_path: &str) -> Result<(), io::Error>
     where
