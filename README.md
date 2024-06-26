@@ -28,6 +28,7 @@ edition = "2021"
 [dependencies]
 pyo3 = { version = "0.18", features = ["extension-module"] }
 ndarray = "0.15"
+rand = "0.8"
 serde = { version = "1.0", features = ["derive"] }
 serde_derive = "1.0"
 serde_json = "1.0"

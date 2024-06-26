@@ -3,6 +3,9 @@ use std::collections::HashMap;
 mod algorithms;
 mod state_manager;
 
+use algorithms::locality_sensitive_hashing::HashGenerator;
+use ndarray::{Array1, Array2, arr1};
+use ndarray;
 use state_manager::local_saver::LocalSaver;
 use algorithms::vector_db as vector_db;
 use algorithms::kdtree as kdtree;
@@ -58,11 +61,23 @@ fn main() {
     //     &kd_tree_obj, 
     //     "local_file.json").expect("failed to save state");
     // //ls local_saver = LocalSaver();
+    println!("----------------------------------");
 
     LocalSaver::load_state(
         &mut kd_tree_obj,
          "local_file.json").expect("Failed to load state");
 
     println!("{:?}", kd_tree_obj);
+
+    let num_projections = 5; // Example number of projections
+    let generator = HashGenerator::new(num_projections);
+
+    // Example input vector
+    let input_vector = arr1(&[0.1, -0.3, 0.5, -0.7, 0.9]);
+
+    // Generate hash for input vector
+    let hash = generator.generate_hash(&input_vector);
+    println!("----------------------------------");
+    println!("{:?}", hash);
     
 }
