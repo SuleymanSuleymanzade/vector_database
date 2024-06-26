@@ -1,6 +1,11 @@
-### Vector Database Project.
+<center>
 
 ![logo](./assets/vector_db.png)
+
+### Vector Database Project. </center>
+
+
+![Rust](https://img.shields.io/badge/rust-%23000000.svg?style=for-the-badge&logo=rust&logoColor=white) ![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white) ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white) ![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white) ![NumPy](https://img.shields.io/badge/numpy-%23013243.svg?style=for-the-badge&logo=numpy&logoColor=white) ![PyTorch](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=for-the-badge&logo=PyTorch&logoColor=white) ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 
 Open source project written in Rust for vector database retrieval storage system.
 
@@ -37,4 +42,15 @@ serde_json = "1.0"
 crate-type = ["cdylib"]
 ```
 
-The project is on developing stage.
+Architecture:
+
+Currently the project archiecture includes the structs responsible for the algorithms and storage.
+
+![logo](./assets/architecture_vec_db.svg)
+
+---
+
+for contribution, open the [link](contribution.md).
+
+
+The project currently under the development.
