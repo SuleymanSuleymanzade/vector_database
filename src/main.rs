@@ -74,8 +74,46 @@ fn main() {
     let hash_value = hash_generator.generate_hash(&inp_vector);
     println!("Generated hash: {}", hash_value);
     
-    hash_generator.insert(&inp_vector, "label1".to_string());
+    hash_generator.insert(&inp_vector);
     let result = hash_generator.get(&inp_vector);
     println!("Retrieved labels: {:?}", result);
     
 }
+
+
+// fn main() {
+//     // Create a new HashGenerator
+//     let mut hash_gen = HashGenerator::new(10, 5);
+
+//     // Create some sample input vectors
+//     let vector1 = arr1(&[1.0, 2.0, 3.0, 4.0, 5.0]);
+//     let vector2 = arr1(&[2.0, 3.0, 4.0, 5.0, 6.0]);
+//     let vector3 = arr1(&[3.0, 4.0, 5.0, 6.0, 7.0]);
+
+//     // Insert vectors with corresponding labels
+//     hash_gen.insert(&vector1);
+//     hash_gen.insert(&vector2);
+//     hash_gen.insert(&vector3);
+
+//     // Retrieve vectors based on input vectors
+//     let retrieved_vector1 = hash_gen.get(&vector1);
+//     let retrieved_vector2 = hash_gen.get(&vector2);
+//     let retrieved_vector3 = hash_gen.get(&vector3);
+
+//     // Print the results
+//     println!("Retrieved vector for vector1: {:?}", retrieved_vector1);
+//     println!("Retrieved vector for vector2: {:?}", retrieved_vector2);
+//     println!("Retrieved vector for vector3: {:?}", retrieved_vector3);
+
+//     // Serialize the HashGenerator to a JSON string
+//     let serialized = serde_json::to_string(&hash_gen).unwrap();
+//     println!("Serialized HashGenerator: {}", serialized);
+
+//     // Deserialize the JSON string back to a HashGenerator
+//     let deserialized: HashGenerator = serde_json::from_str(&serialized).unwrap();
+//     println!("Deserialized HashGenerator: {:?}", deserialized);
+
+//     // Verify that the deserialized HashGenerator works as expected
+//     let retrieved_vector1_deserialized = deserialized.get(&vector1);
+//     println!("Retrieved vector for vector1 from deserialized HashGenerator: {:?}", retrieved_vector1_deserialized);
+// }

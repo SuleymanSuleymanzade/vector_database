@@ -1,6 +1,5 @@
 use std::collections::HashMap;
-use crate::vector_db;
-use ndarray::{Array1, Array2, arr1};
+use ndarray::{Array1, Array2};
 use rand::prelude::*;
 use serde::{Serialize, Deserialize, Serializer, Deserializer};
 use serde::ser::SerializeStruct;
@@ -13,7 +12,7 @@ pub struct HashGenerator {
     hash_size: usize,
     dimention_size: usize,
     projections: Array2<f64>,
-    hash_map: HashMap<String, Vec<String>>,
+    hash_map: HashMap<String, Array1<f64>>,
 }
 
 impl Serialize for HashGenerator {
@@ -25,7 +24,10 @@ impl Serialize for HashGenerator {
         state.serialize_field("hash_size", &self.hash_size)?;
         state.serialize_field("dimention_size", &self.dimention_size)?;
         state.serialize_field("projections", &self.projections.as_slice().unwrap())?;
-        state.serialize_field("hash_map", &self.hash_map)?;
+        let hash_map_serialized: HashMap<String, Vec<f64>> = self.hash_map.iter()
+            .map(|(k, v)| (k.clone(), v.to_vec()))
+            .collect();
+        state.serialize_field("hash_map", &hash_map_serialized)?;
         state.end()
     }
 }
@@ -40,18 +42,22 @@ impl<'de> Deserialize<'de> for HashGenerator {
             hash_size: usize,
             dimention_size: usize,
             projections: Vec<f64>,
-            hash_map: HashMap<String, Vec<String>>,
+            hash_map: HashMap<String, Vec<f64>>,
         }
 
         let helper = HashGeneratorHelper::deserialize(deserializer)?;
         let projections = Array2::from_shape_vec((helper.hash_size, helper.dimention_size), helper.projections)
             .map_err(serde::de::Error::custom)?;
 
+        let hash_map: HashMap<String, Array1<f64>> = helper.hash_map.into_iter()
+            .map(|(k, v)| (k, Array1::from(v)))
+            .collect();
+
         Ok(HashGenerator {
             hash_size: helper.hash_size,
             dimention_size: helper.dimention_size,
             projections,
-            hash_map: helper.hash_map,
+            hash_map,
         })
     }
 }
@@ -75,18 +81,19 @@ impl HashGenerator {
         dot_product.iter().map(|&x| if x > 0.0 { '1' } else { '0' }).collect()
     }
 
-    pub fn insert(&mut self, inp_vector: &Array1<f64>, label: String) {
+    pub fn insert(&mut self, inp_vector: &Array1<f64>) {
         let hash_value = self.generate_hash(inp_vector);
-        self.hash_map.entry(hash_value).or_insert_with(Vec::new).push(label);
+        self.hash_map.insert(hash_value, inp_vector.clone());
     }
 
-    pub fn get(&self, inp_vector: &Array1<f64>) -> Vec<String> {
+    pub fn get(&self, inp_vector: &Array1<f64>) -> Option<Array1<f64>> {
         let hash_value = self.generate_hash(inp_vector);
-        self.hash_map.get(&hash_value).cloned().unwrap_or_else(Vec::new)
+        self.hash_map.get(&hash_value).cloned()
     }
 }
 
 #[derive(Clone, Serialize, Deserialize)]
+#[allow(dead_code)]
 pub struct LSH{
     num_tables: usize,
     hash_size: usize,
@@ -111,7 +118,23 @@ impl LSH{
             hash_size,
             dimention_size,
             generators: buff_generators
+        }       
+    }
+
+    pub fn insert(&mut self, inp_vector: &Array1<f64>){
+        for item in self.generators.iter_mut(){
+            item.insert(inp_vector);
         }
-        
+    }
+
+    pub fn nearest(&self, inp_vector: &Array1<f64>) -> Vec<Array1<f64>>{
+        let mut buff: Vec<Array1<f64>> = vec![];
+        for item in self.generators.iter(){
+            let candidate = item.get(inp_vector);
+            if let Some(data) = candidate{
+                buff.push(data);
+            }
+        }
+        return buff
     }
 }
