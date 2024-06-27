@@ -78,11 +78,12 @@ For deploying the project install `python3`
 ##### 3. Setting Mojo API to production.
 _Comming soon_.
 
+### Contributing. 
 
 For contribution, open the [link](contribution.md). 
 
 Preferable skills for __Rust__ contributors:
-* Actix web framework
+* Actix web [framework](https://actix.rs/)
 * working with _Rust_ ndarrays
 * knowing _Polaris_ 
 * Parallel programming (multithreading) and NVidia CUDA APIs.
