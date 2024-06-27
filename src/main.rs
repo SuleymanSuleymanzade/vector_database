@@ -89,6 +89,16 @@ fn main() {
     let res = lsh.nearest(&vector4);
     println!("{:?}", res);
 
+
+    let arr = vec![2,5,77,3,2,5,4,3,54,9,7,10];
+    let rr: Vec<i32> = arr
+        .iter()
+        .map(|&x| x + 2)
+        .filter(|&x| x > 3)
+        .collect();
+
+    println!("{:?}", rr);
+
 }
 
 
