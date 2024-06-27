@@ -31,9 +31,10 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-pyo3 = { version = "0.18", features = ["extension-module"] }
+pyo3 = { version = "0.21.0", features = ["extension-module"] }
+numpy = "0.21"
 ndarray = "0.15"
-numpy = "0.14"
+ndarray-rand = "0.14"
 rand = "0.8"
 serde = { version = "1.0", features = ["derive"] }
 serde_derive = "1.0"

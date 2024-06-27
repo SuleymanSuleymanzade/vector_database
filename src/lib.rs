@@ -1,4 +1,4 @@
-use pyo3::ffi::_PyInterpreterState_GetEvalFrameFunc;
+//use pyo3::ffi::_PyInterpreterState_GetEvalFrameFunc;
 use pyo3::methods;
 
 use numpy::{PyArray1, ToPyArray};
@@ -14,11 +14,8 @@ use crate::algorithms::fast_search::FastSearch;
 
 use ndarray::{Array1, Array2};
 
-
-
 use algorithms::locality_sensitive_hashing::HashGenerator;
 use algorithms::locality_sensitive_hashing::LSH;
-
 
 #[pyclass]
 struct VectorDB{
