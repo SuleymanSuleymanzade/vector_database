@@ -138,3 +138,25 @@ impl LSH{
         return buff
     }
 }
+
+mod tests{
+    #[test]
+    fn check_lsg(){
+        use super::*;
+        use ndarray::{Array1, Array2, arr1};
+        use ndarray;
+        let mut lsh = LSH::new(5, 6, 5);
+        // Create some sample input vectors
+        let vector1 = arr1(&[1.0, 2.0, 3.0, 4.0, 5.0]);
+        let vector2 = arr1(&[2.0, 3.0, 4.0, 5.0, 6.0]);
+        let vector3 = arr1(&[3.0, 4.0, 5.0, 6.0, 7.0]);    
+
+        lsh.insert(&vector1);
+        lsh.insert(&vector2);
+        lsh.insert(&vector3);
+
+        let vector4 = arr1(&[3.5, 4.0, 5.0, 6.0, 7.0]);    
+        let res = lsh.nearest(&vector4);
+        assert_eq!(res.get(0).unwrap(), vector3);
+    }
+}
